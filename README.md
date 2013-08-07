@@ -17,7 +17,7 @@ Example
     // Class Animal
     // Implement the constructor method of the class Animal
     function Animal() {
-      console.log("Animal constructor is constructor");
+      console.log("Animal constructor is called");
     }
   
     // Assign attributes and methods to Animal
@@ -38,7 +38,7 @@ Example
         // Please note that the __base__ is added to this object automatically.
         this.__base__();
         
-        console.log("Bird constructor is constructor");
+        console.log("Bird constructor is called");
     }
     
     Bird = Bird.Extend(Animal, {
@@ -59,8 +59,8 @@ Example
 Output
 ------
 
-    Animal constructor is constructor
-    Bird constructor is constructor
+    Animal constructor is called
+    Bird constructor is called
     object
     true
     true
