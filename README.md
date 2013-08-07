@@ -41,6 +41,7 @@ Example
         console.log("Bird constructor is called");
     }
     
+    // Extend Animal, add more methods or/and attributes
     Bird = Bird.Extend(Animal, {
         fly: function() {
             // ....
