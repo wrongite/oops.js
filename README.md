@@ -7,9 +7,9 @@ opps.js is a simple OOP library for Javascript.
 Features
 --------
   
-  1. Derives methods and attributes from base class.
-  1. Derives getter and setter from base class.
-  1. Automatically added the method "__base__" point to the base class construtor.
+  1. Supports methods and attributes inheritance .
+  1. Supports getter and setter inheritance.
+  1. Supports calling the base class constructor method through "this.__base__".
 
 Example
 -------
