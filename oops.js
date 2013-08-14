@@ -33,7 +33,6 @@ Function.prototype.Extend = function (base, attrs) {
     }
 
     var fnBody = this.toString();
-    //var fn = eval('(' + fnBody + ')');
 
     // Create empty constructor.
     var fnConstructor = (function () {
