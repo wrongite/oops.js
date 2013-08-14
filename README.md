@@ -9,7 +9,7 @@ Features
   
   1. Supports methods and attributes inheritance .
   1. Supports getter and setter inheritance.
-  1. Supports calling the base class constructor method through "this.__base__".
+  1. Supports calling the base class constructor method through "this.\_\_base\_\_".
 
 Example
 -------
