@@ -38,7 +38,7 @@ Function.prototype.Extend = function (base, attrs) {
     var fnConstructor = (function () {
         var m = fnBody.match(/function\s+(\w+)/, fnBody);
         var name = m && m[1] || '';
-        return eval('(function ' + name + '() {} )');
+        return eval('(function() {return ' + name + ';})()');
     })();
     fnConstructor.prototype = base.prototype;
     this.prototype = new fnConstructor();
