@@ -34,23 +34,28 @@ Function.prototype.Extend = function (base, attrs) {
 
     var fnBody = this.toString();
 
+
     // Create empty constructor.
     var fnConstructor = (function () {
         var m = fnBody.match(/function\s+(\w+)/, fnBody);
         var name = m && m[1] || '';
-        return eval('(function ' + name + '() {} )');
+        return eval('(function() {return ' + name + ';})()');
     })();
+
     fnConstructor.prototype = base.prototype;
     this.prototype = new fnConstructor();
 
     // Copy defined prototype object.
-    var protos = Object.getOwnPropertyNames(this.prototype);
+
+    var protos = Object.keys(this.prototype);
     for (var idx in protos) {
         var key = protos[idx];
         if (key != 'constructor') {
-            Object.defineProperty(this.prototype, key, Object.getOwnPropertyDescriptor(this.prototype, key));
+            if(typeof defineProperty != 'undefined') Object.defineProperty(this.prototype, key, {value:protos[key]});
+            else this.prototype[key] = protos[key];
         }
     }
+
 
     // Assign the reference to base class.
     this.prototype.__base__ = function () {
@@ -60,11 +65,48 @@ Function.prototype.Extend = function (base, attrs) {
 
     // Assigned attributes
     if (attrs) {
-        var attrsNames = Object.getOwnPropertyNames(attrs);
+        var attrsNames = Object.keys(attrs);
         for (var idx in attrsNames) {
             var key = attrsNames[idx];
-            Object.defineProperty(this.prototype, key, Object.getOwnPropertyDescriptor(attrs, key));
+            if(typeof defineProperty != 'undefined') Object.defineProperty(this.prototype, key, {value:attrs[key]});
+            else this.prototype[key] = attrs[key];
         }
     }
     return this;
 }
+
+// Object.keys from kangax
+Object.keys = Object.keys || (function () {
+    var hasOwnProperty = Object.prototype.hasOwnProperty,
+        hasDontEnumBug = !{toString:null}.propertyIsEnumerable("toString"),
+        DontEnums = [
+            'toString',
+            'toLocaleString',
+            'valueOf',
+            'hasOwnProperty',
+            'isPrototypeOf',
+            'propertyIsEnumerable',
+            'constructor'
+        ],
+        DontEnumsLength = DontEnums.length;
+  
+    return function (o) {
+        if (typeof o != "object" && typeof o != "function" || o === null)
+            throw new TypeError("Object.keys called on a non-object");
+     
+        var result = [];
+        for (var name in o) {
+            if (hasOwnProperty.call(o, name))
+                result.push(name);
+        }
+     
+        if (hasDontEnumBug) {
+            for (var i = 0; i < DontEnumsLength; i++) {
+                if (hasOwnProperty.call(o, DontEnums[i]))
+                    result.push(DontEnums[i]);
+            }   
+        }
+     
+        return result;
+    };
+})();
