@@ -8,7 +8,7 @@ Features
 --------
   
   1. Supports methods and attributes inheritance .
-  1. Supports getter and setter inheritance.
+  1. Supports getters and setters inheritance. ([Defining getters and setters] (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters))
   1. Supports calling the base class constructor method through "this.\_\_base\_\_".
 
 Example
