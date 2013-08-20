@@ -38,19 +38,17 @@ Function.prototype.Extend = function (base, attrs) {
     var fnConstructor = (function () {
         var m = fnBody.match(/function\s+(\w+)/, fnBody);
         var name = m && m[1] || '';
-        return eval('(function ' + name + '() {} )');
+        var ctorFn = eval('(function ' + name + '() {} )');
+        if(typeof(ctorFn) == 'function') {
+            return ctorFn;
+        }
+        else {
+            // IE8 workaround
+            return eval(name);
+        }
     })();
     fnConstructor.prototype = base.prototype;
     this.prototype = new fnConstructor();
-
-    // Copy defined prototype object.
-    var protos = Object.getOwnPropertyNames(this.prototype);
-    for (var idx in protos) {
-        var key = protos[idx];
-        if (key != 'constructor') {
-            Object.defineProperty(this.prototype, key, Object.getOwnPropertyDescriptor(this.prototype, key));
-        }
-    }
 
     // Assign the reference to base class.
     this.prototype.__base__ = function () {
@@ -60,10 +58,19 @@ Function.prototype.Extend = function (base, attrs) {
 
     // Assigned attributes
     if (attrs) {
-        var attrsNames = Object.getOwnPropertyNames(attrs);
-        for (var idx in attrsNames) {
-            var key = attrsNames[idx];
-            Object.defineProperty(this.prototype, key, Object.getOwnPropertyDescriptor(attrs, key));
+        if(typeof(Object.getOwnPropertyNames) == 'function') {
+            var attrsNames = Object.getOwnPropertyNames(attrs);
+            for (var idx in attrsNames) {
+                var key = attrsNames[idx];
+                Object.defineProperty(this.prototype, key, Object.getOwnPropertyDescriptor(attrs, key));
+            }
+        }
+        else {
+            for (var key in attrs) {
+                if(key != 'constructor' && attrs.hasOwnProperty(key)) {
+                    this.prototype[key] = attrs[key];
+                }
+            }
         }
     }
     return this;
